@@ -1,3 +1,4 @@
+from itertools import product
 from urllib import response
 from flask import Flask, render_template, jsonify, request
 from flask import Response, redirect, url_for
@@ -24,7 +25,27 @@ def getProduct():
         response.append(str(item))
     return jsonify(response)
 
-    
+@app.route('/post-products', methods=['POST'])
+def addProduct():
+    products = db['products']
+    name = request.form['name']
+    price = request.form['price']
+    quantity = request.form['quantity']
+    if name and price and quantity:
+        product = Products(name, price, quantity)
+        products.insert_one(product.toDBCollection())
+        response = jsonify({
+            'name': name,
+            'price': price,
+            'quantity': quantity
+        })
+        response.headers.add('Access-Control_Allow-Origin', '*')
+        return redirect(url_for('home'))
+    else:
+        return notFound()
+
+
+
 #Errores
 @app.errorhandler(404)
 def notFound(error=None):
