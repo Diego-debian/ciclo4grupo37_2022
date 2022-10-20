@@ -65,6 +65,15 @@ def editProduct(product_name):
         return redirect(url_for('home'))
     else:
         notFound()
+        
+#método delete
+@app.route('/delete-product/<string:product_name>', methods=['DELETE'])
+def delete(product_name):
+    products = db['products']
+    products.delete_one({
+        'name': product_name
+    })
+    return redirect(url_for('home'))
 
 #Errores
 @app.errorhandler(404)
