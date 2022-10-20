@@ -25,6 +25,7 @@ def getProduct():
         response.append(str(item))
     return jsonify(response)
 
+#Método Post
 @app.route('/post-products', methods=['POST'])
 def addProduct():
     products = db['products']
@@ -44,7 +45,26 @@ def addProduct():
     else:
         return notFound()
 
-
+#método update
+@app.route('/edit-product/<string:product_name>', methods=['POST'])
+def editProduct(product_name):
+    products = db['products']
+    name = request.form['name']
+    price = request.form['price']
+    quantity = request.form['quantity']
+    if name and price and quantity:
+        products.update_one({'name':product_name},
+        {'$set':{
+            'name': name,
+            'price': price,
+            'quantity': quantity
+        }})
+        response = jsonify({
+            'message': 'Producto ' + product_name + 'actualizado correctamente'
+        })
+        return redirect(url_for('home'))
+    else:
+        notFound()
 
 #Errores
 @app.errorhandler(404)
