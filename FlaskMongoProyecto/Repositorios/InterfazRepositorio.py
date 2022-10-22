@@ -71,7 +71,7 @@ class InterfazRepositorio(Generic[T]):
                 x[attribute] = self.transformObjectIds(x[attribute])
         return x
 
-    # Función de busqueda de todos los ids
+    """ Función de busqueda de todos los ids """
     def findAll(self):
         laColeccion = self.db[self.collection]
         data = []
@@ -131,3 +131,26 @@ class InterfazRepositorio(Generic[T]):
         x = laColeccion.find_one({"_id": ObjectId(elId)})
         x["_id"] = x["_id"].__str__()
         return self.findById(elId)
+    
+    #Para los Query normalitos
+    def query(self, theQuery):
+        laColeccion = self.db[self.collection]
+        data = []
+        for x in laColeccion.find(theQuery):
+            x["_id"] = x["_id"].__str__()
+            x = self.transformObjectIds(x)
+            x = self.getValuesDBRef(x)
+            data.append(x)
+        return data
+    
+    #Para los query de agragación o relación
+    def queryAggregation(self, theQuery):
+        laColeccion = self.db[self.collection]
+        data = []
+        for x in laColeccion.aggregate(theQuery):
+            x["_id"] = x["_id"].__str__()
+            x = self.transformObjectIds(x)
+            x = self.getValuesDBRef(x)
+            data.append(x)
+        return data
+
