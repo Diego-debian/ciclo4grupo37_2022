@@ -117,7 +117,7 @@ class InterfazRepositorio(Generic[T]):
         laColeccion = self.db[self.collection]
         elId = ""
         item = self.transformRefs(item)
-        if hasattr(item, "_id") and item.id != "":
+        if hasattr(item, "_id") and item._id != "":
             elId = item._id
             _id = ObjectId(elId)
             laColeccion = self.db[self.collection]
