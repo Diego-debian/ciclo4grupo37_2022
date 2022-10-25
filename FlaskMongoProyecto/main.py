@@ -55,6 +55,42 @@ def modificarPartido(id):
 def eliminarPartido(id):
     json = miControladorPartido.delete(id)
     return jsonify(json)
+
+###########################################
+###      ENDPOINTS CANDIDATOS           ###
+###########################################
+@app.route("/candidatos", methods=["GET"])
+def getCandidatos():
+    json = miControladorCandidato.index()
+    return jsonify(json)
+
+@app.route("/candidatos", methods=["POST"])
+def crearCandidato():
+    data = request.get_json()
+    json = miControladorCandidato.create(data)
+    return jsonify(json)
+
+@app.route("/candidatos/<string:id_candidato>", methods=["GET"])
+def getCandidato(id_candidato):
+    json = miControladorCandidato.show(id_candidato)
+    return jsonify(json)
+
+@app.route("/candidatos/<string:id_candidato>", methods=["PUT"])
+def modificarCandidato(id_candidato):
+    data = request.get_json()
+    json = miControladorCandidato.update(id_candidato, data)
+    return jsonify(json)
+
+@app.route("/candidatos/<string:id_candidato>", methods=["DELETE"])
+def eliminarCandidato(id_candidato):
+    json = miControladorCandidato.delete(id_candidato)
+    return jsonify(json)
+
+@app.route("/candidatos/<string:id_candidato>/partido/<string:id_partido>", methods=["PUT"])
+def asignarPartidoCandidato(id_candidato, id_partido):
+    json = miControladorCandidato.asignarCandidato(id_candidato, id_partido)
+    return jsonify(json)
+
     
 if __name__ == "__main__":
     app.run(debug=False, port=9000)
