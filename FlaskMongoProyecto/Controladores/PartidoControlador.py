@@ -20,7 +20,7 @@ class PartidoControlador():
         
     def update(self, id, infoPartido):
         PartidoActual = Partido(self.repositorioPartido.findById(id))
-        PartidoActual.id = infoPartido["id"]
+        #PartidoActual.id = infoPartido["id"]
         PartidoActual.nombre = infoPartido["nombre"]
         PartidoActual.lema = infoPartido["lema"]
         return self.repositorioPartido.save(PartidoActual)
