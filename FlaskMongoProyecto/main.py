@@ -138,7 +138,7 @@ def getResultado(id):
 @app.route("/resultados/mesa/<string:id_mesa>/candidato/<string:id_candidato>", methods=["POST"])
 def crearResultado(id_mesa, id_candidato):
     data = request.get_json()
-    json = miControladorResultado.create(id_mesa, id_candidato)
+    json = miControladorResultado.create(data, id_mesa, id_candidato)
     return jsonify(json)
 
 #Modificar un resultado a una mesa

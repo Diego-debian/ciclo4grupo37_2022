@@ -13,7 +13,7 @@ class ResultadoControlador():
         self.repositorioMesa = MesaRepositorio()
 
     def index(self):
-        self.repositorioResultado.findAll()
+        return self.repositorioResultado.findAll()
 
     def create(self, infoResultado, id_mesa, id_candidato):
         nuevoResultado = Resultado(infoResultado)

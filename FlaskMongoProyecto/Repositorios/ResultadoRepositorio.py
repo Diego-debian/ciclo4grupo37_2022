@@ -11,7 +11,7 @@ class ResultadoRepositorio(InterfazRepositorio[Resultado]):
 
     #Función que revisa el canadidato votado en cada mesa
     def getListadoMesasCandidatoInscrito(self, id_candidato):
-        theQuery = {"candidato.$id":ObjectId(id_candidato)}
+        theQuery = {"candidato.$id": ObjectId(id_candidato)}
         return self.query(theQuery)
     
 
@@ -20,7 +20,7 @@ class ResultadoRepositorio(InterfazRepositorio[Resultado]):
         query1 = {
             "$group":{
                 "_id":"$candidato",
-                "$max":{
+                "max":{
                     "$max":"$cedula"
                 },
                 "doc":{"$first":"$$ROOT"}
