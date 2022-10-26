@@ -1,5 +1,4 @@
 from crypt import methods
-import json
 from flask import Flask, request, Response
 from flask import jsonify
 from flask_cors import CORS
@@ -91,6 +90,86 @@ def asignarPartidoCandidato(id_candidato, id_partido):
     json = miControladorCandidato.asignarCandidato(id_candidato, id_partido)
     return jsonify(json)
 
-    
+###########################################
+###          ENDPOINTS MESA             ###
+###########################################
+@app.route("/mesas", methods=["GET"])
+def getMesas():
+    json = miControladorMesa.index()
+    return jsonify(json)
+
+@app.route("/mesas/<string:id>", methods=["GET"])
+def getMesa(id):
+    json = miControladorMesa.show(id)
+    return jsonify(json)
+
+@app.route("/mesas", methods=["POST"])
+def crearMesa():
+    data = request.get_json()
+    json = miControladorMesa.create(data)
+    return jsonify(json)
+
+@app.route("/mesas/<string:id>", methods=["PUT"])
+def modificarMesa(id):
+    data = request.get_json()
+    json = miControladorMesa.update(id, data)
+    return jsonify(json)
+
+@app.route("/mesas/<string:id>", methods=["DELETE"])
+def eliminarMesa(id):
+    json = miControladorMesa.delete(id)
+    return jsonify(json)
+
+###########################################
+###    ENDPOINTS RESULTADOS             ###
+###########################################
+
+@app.route("/resultados", methods=["GET"])
+def getResultados():
+    json = miControladorResultado.index()
+    return jsonify(json)
+
+@app.route("/resultados/<string:id>", methods=["GET"])
+def getResultado(id):
+    json = miControladorResultado.show(id)
+    return jsonify(json)
+
+#Añadir resultado a una mesa
+@app.route("/resultados/mesa/<string:id_mesa>/candidato/<string:id_candidato>", methods=["POST"])
+def crearResultado(id_mesa, id_candidato):
+    data = request.get_json()
+    json = miControladorResultado.create(id_mesa, id_candidato)
+    return jsonify(json)
+
+#Modificar un resultado a una mesa
+@app.route("/resultados/<string:id_resultado>/mesa/<string:id_mesa>/candidato/<string:id_candidato>", methods=["PUT"])
+def modificarResultado(id_resultado, id_mesa, id_candidato):
+    data = {}
+    json = miControladorResultado.update(id_resultado, data, id_mesa, id_candidato)
+    return jsonify(json)
+
+@app.route("/resultados/<string:id>", methods=["DELETE"])
+def eliminarResultado(id):
+    json = miControladorResultado.delete(id)
+    return jsonify(json)
+
+# Mirar los resultados de una mesa en particular
+@app.route("/resultados/mesas/<string:id_mesa>", methods=["GET"])
+def inscritosEnMesa(id_mesa):
+    json = miControladorResultado.getListarCandidatosMesa(id_mesa)
+    return jsonify(json)
+
+#Buscar un candidato en todas las mesas 
+@app.route("/resultados/mesas/<string:id_candidato>", methods=["GET"])
+def inscritoEnMesas(id_candidato):
+    json = miControladorResultado.getListarMesasDeInscritoCandidato(id_candidato)
+    return jsonify(json)
+
+#Buscar la cedula
+@app.route("/resultados/documento", methods=["GET"])
+def getMaxDocument():
+    json = miControladorResultado.getMayorCedula()
+    return jsonify(json)
+
 if __name__ == "__main__":
     app.run(debug=False, port=9000)

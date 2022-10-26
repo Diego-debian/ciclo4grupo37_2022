@@ -39,7 +39,7 @@ class InterfazRepositorio(Generic[T]):
                 x[k] = self.getValuesDBRef(x[k])
         return x
 
-    #Funxión que busca un Id
+    #Función que busca un Id
     def findById(self, id):
         laColeccion = self.db[self.collection]
         x = laColeccion.find_one({"_id": ObjectId(id)})
@@ -101,7 +101,7 @@ class InterfazRepositorio(Generic[T]):
     #convierte los objetos de la db a sus referencias 
     def ObjectToDBRefs(self, item):
         nameCollection = item.__class__.__name__.lower()
-        return DBRef(nameCollection, ObjectId(item.id))
+        return DBRef(nameCollection, ObjectId(item._id))
 
     #transforma las referencias
     def transformRefs(self, item):
