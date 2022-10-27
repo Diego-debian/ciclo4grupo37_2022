@@ -9,8 +9,8 @@ from Repositorios.CandidatoRepositorio import CandidatoRepositorio
 class ResultadoControlador():
     def __init__(self):
         self.repositorioResultado = ResultadoRepositorio()
-        self.repositorioCandidato = CandidatoRepositorio()
         self.repositorioMesa = MesaRepositorio()
+        self.repositorioCandidato = CandidatoRepositorio()
 
     def index(self):
         return self.repositorioResultado.findAll()
@@ -28,7 +28,7 @@ class ResultadoControlador():
         return elResultado.__dict__
         
     def update(self, id, infoResultado, id_mesa, id_candidato):
-        nuevoResultado = Resultado(infoResultado)
+        nuevoResultado = Resultado(self.repositorioResultado.findById(id))
         laMesa = Mesa(self.repositorioMesa.findById(id_mesa))
         elCandidato = Candidato(self.repositorioCandidato.findById(id_candidato))
         nuevoResultado.mesa = laMesa

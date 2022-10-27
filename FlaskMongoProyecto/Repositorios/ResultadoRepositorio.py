@@ -21,9 +21,10 @@ class ResultadoRepositorio(InterfazRepositorio[Resultado]):
             "$group":{
                 "_id":"$candidato",
                 "max":{
-                    "$max":"$cedula"
+                    "$max": "$cedula"
                 },
-                "doc":{"$first":"$$ROOT"}
+                "doc":{"$first":"$$ROOT"
+                }
             }
         }
         pipeline = [query1]

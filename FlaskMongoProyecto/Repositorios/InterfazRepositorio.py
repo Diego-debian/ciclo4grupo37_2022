@@ -17,7 +17,7 @@ class InterfazRepositorio(Generic[T]):
         newList = []
         laColeccion = self.db[theList[0]._id.collection]
         for item in theList:
-            value = laColeccion.find_one({"_id":ObjectId(item.id)})
+            value = laColeccion.find_one({"_id": ObjectId(item.id)})
             value["_id"] = value["_id"].__str__()
             newList.append(value)
         return newList
@@ -27,15 +27,13 @@ class InterfazRepositorio(Generic[T]):
         for k in keys:
             if isinstance(x[k], DBRef):
                 laColeccion = self.db[x[k].collection]
-                valor = laColeccion.find_one({
-                    "_id":ObjectId(x[k].id)
-                })
+                valor = laColeccion.find_one({"_id": ObjectId(x[k].id)})
                 valor["_id"] = valor["_id"].__str__()
                 x[k] = valor
                 x[k] = self.getValuesDBRef(x[k])
-            elif isinstance(x[k], list) and len(x[k])> 0:
+            elif isinstance(x[k], list) and len(x[k]) > 0:
                 x[k] = self.getValuesDBRefFromList(x[k])
-            elif isinstance(x[k], dict):
+            elif isinstance(x[k], dict) :
                 x[k] = self.getValuesDBRef(x[k])
         return x
 
@@ -67,8 +65,8 @@ class InterfazRepositorio(Generic[T]):
                 x[attribute] = x[attribute].__str__()
             elif isinstance(x[attribute], list):
                 x[attribute] = self.formatList(x[attribute])
-            elif isinstance(x[attribute], dict):
-                x[attribute] = self.transformObjectIds(x[attribute])
+            elif  isinstance(x[attribute], dict):
+                x[attribute]=self.transformObjectIds(x[attribute])
         return x
 
     """ Función de busqueda de todos los ids """
@@ -89,7 +87,7 @@ class InterfazRepositorio(Generic[T]):
         delattr(item, "_id")
         item = item.__dict__
         updateItem = {"$set": item}
-        x = laColeccion.update_one({"_id":id}, updateItem)
+        x = laColeccion.update_one({"_id": _id}, updateItem)
         return {"updated_count": x.matched_count}
 
     # Borrar algun documento
@@ -99,7 +97,7 @@ class InterfazRepositorio(Generic[T]):
         return {"deleted_count": cuenta}
 
     #convierte los objetos de la db a sus referencias 
-    def ObjectToDBRefs(self, item):
+    def ObjectToDBRefs(self, item: T):
         nameCollection = item.__class__.__name__.lower()
         return DBRef(nameCollection, ObjectId(item._id))
 
@@ -116,19 +114,19 @@ class InterfazRepositorio(Generic[T]):
     def save(self, item: T):
         laColeccion = self.db[self.collection]
         elId = ""
-        item = self.transformRefs(item)
+        item  = self.transformRefs(item)
         if hasattr(item, "_id") and item._id != "":
             elId = item._id
             _id = ObjectId(elId)
-            laColeccion = self.db[self.collection]
+            laColeccion =  self.db[self.collection]
             delattr(item, "_id")
             item = item.__dict__
-            updateItem = {"$set":item}
-            x = laColeccion.update_one({"_id":_id}, updateItem)
+            updateItem =  {"$set":item}
+            x = laColeccion.update_one({"_id": _id}, updateItem)
         else:
             _id = laColeccion.insert_one(item.__dict__)
             elId = _id.inserted_id.__str__()
-        x = laColeccion.find_one({"_id": ObjectId(elId)})
+        x  = laColeccion.find_one({"_id": ObjectId(elId)})
         x["_id"] = x["_id"].__str__()
         return self.findById(elId)
     
