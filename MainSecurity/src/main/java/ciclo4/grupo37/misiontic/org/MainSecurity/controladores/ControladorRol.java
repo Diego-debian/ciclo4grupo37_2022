@@ -55,8 +55,9 @@ public class ControladorRol {
         Rol rolActual= miRepositorioRol
                 .findById(id)
                 .orElse(null);
-        if(rolActual!=null){
+        if(rolActual!=null) {
             miRepositorioRol.delete(rolActual);
+            System.out.println("Elemento eliminado");
         }
     }
 }
