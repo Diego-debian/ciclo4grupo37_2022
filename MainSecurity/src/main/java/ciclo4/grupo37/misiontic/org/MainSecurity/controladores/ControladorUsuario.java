@@ -107,6 +107,8 @@ public class ControladorUsuario {
     /**
      * Validar el ingreso de algún usuario
      * */
+
+    @PostMapping("/validar")
     public Usuario validate(@RequestBody Usuario infoUsuario,
                             final HttpServletResponse response)
     throws IOException {

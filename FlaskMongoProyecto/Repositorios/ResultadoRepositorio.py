@@ -20,12 +20,12 @@ class ResultadoRepositorio(InterfazRepositorio[Resultado]):
         query1 = {
             "$group":{
                 "_id":"$candidato",
-                "max":{
-                    "$max": "$cedula"
+                "Total votos en todas las mesas":{
+                    "$sum": 1
                 },
                 "doc":{"$first":"$$ROOT"
                 }
-            }
+            },
         }
         pipeline = [query1]
         return self.queryAggregation(pipeline)
