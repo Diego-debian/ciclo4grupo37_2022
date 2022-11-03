@@ -20,7 +20,7 @@ class ResultadoRepositorio(InterfazRepositorio[Resultado]):
         query1 = {
             "$group":{
                 "_id":"$candidato",
-                "Total votos en todas las mesas":{
+                "Total_votos_candidato ":{
                     "$sum": 1
                 },
                 "doc":{"$first":"$$ROOT"
