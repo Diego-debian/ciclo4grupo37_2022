@@ -164,7 +164,7 @@ def inscritoEnMesas(id_candidato):
     json = miControladorResultado.getListarMesasDeInscritoCandidato(id_candidato)
     return jsonify(json)
 
-#Buscar la cedula
+#Conteo de votos
 @app.route("/resultados/documento", methods=["GET"])
 def getMaxDocument():
     json = miControladorResultado.getMayorCedula()
