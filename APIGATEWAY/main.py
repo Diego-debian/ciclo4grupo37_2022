@@ -77,7 +77,6 @@ def before_request_callback():
         usuario = get_jwt_identity()
         if usuario["rol"]is not None:
             tienePersmiso=validarPermiso(endPoint,request.method,usuario["rol"]["_id"])
-            print(tienePersmiso)
             if not tienePersmiso:
                 return jsonify({"message": "Permission denied"}), 401    
         else:
@@ -94,7 +93,84 @@ def getMesas():
     Json = response.json()
     return jsonify(Json)
 
+@app.route("/mesas", methods=["POST"])
+def crearMesas():
+    data = request.get_json() #Para los datos que llegan en el body
+    headers= {"Content-Type": "application/json; charset=utf-8"}
+    url = dataConfig["url-backend-votes"]+'/mesas'
+    response = requests.post(url, headers=headers, json=data)
+    Json = response.json()
+    return jsonify(Json)
 
+@app.route("/mesas/<string:id>", methods=['GET'])
+def getMesa(id):
+    headers= {"Content-Type": "application/json; charset=utf-8"}
+    url = dataConfig["url-backend-votes"]+'/mesas/'+id
+    response = requests.get(url, headers=headers)
+    Json = response.json()
+    return jsonify(Json)
+
+@app.route("/mesas/<string:id>", methods=["PUT"])
+def modificarMesas(id):
+    data = request.get_json() #Para los datos que llegan en el body
+    headers= {"Content-Type": "application/json; charset=utf-8"}
+    url = dataConfig["url-backend-votes"]+'/mesas/'+id
+    response = requests.put(url, headers=headers, json=data)
+    Json = response.json()
+    return jsonify(Json)
+
+@app.route("/mesas/<string:id>", methods=['DELETE'])
+def eliminarMesa(id):
+    headers= {"Content-Type": "application/json; charset=utf-8"}
+    url = dataConfig["url-backend-votes"]+'/mesas/'+id
+    response = requests.get(url, headers=headers)
+    Json = response.json()
+    return jsonify(Json)
+
+######################################
+##      ENDPOINTS DE PARTIDOS       ##
+######################################
+@app.route("/partidos", methods=['GET'])
+def getPartidos():
+    headers= {"Content-Type": "application/json; charset=utf-8"}
+    url = dataConfig["url-backend-votes"]+'/partidos'
+    response = requests.get(url, headers=headers)
+    Json = response.json()
+    return jsonify(Json)
+
+@app.route("/partidos", methods=["POST"])
+def crearPartidos():
+    data = request.get_json() #Para los datos que llegan en el body
+    headers= {"Content-Type": "application/json; charset=utf-8"}
+    url = dataConfig["url-backend-votes"]+'/partidos'
+    response = requests.post(url, headers=headers, json=data)
+    Json = response.json()
+    return jsonify(Json)
+
+@app.route("/partidos/<string:id>", methods=['GET'])
+def getPartido(id):
+    headers= {"Content-Type": "application/json; charset=utf-8"}
+    url = dataConfig["url-backend-votes"]+'/partidos/'+id
+    response = requests.get(url, headers=headers)
+    Json = response.json()
+    return jsonify(Json)
+
+@app.route("/partidos/<string:id>", methods=["PUT"])
+def modificarPartido(id):
+    data = request.get_json() #Para los datos que llegan en el body
+    headers= {"Content-Type": "application/json; charset=utf-8"}
+    url = dataConfig["url-backend-votes"]+'/partidos/'+id
+    response = requests.put(url, headers=headers, json=data)
+    Json = response.json()
+    return jsonify(Json)
+
+@app.route("/partidos/<string:id>", methods=['DELETE'])
+def eliminarMesa(id):
+    headers= {"Content-Type": "application/json; charset=utf-8"}
+    url = dataConfig["url-backend-votes"]+'/partidos/'+id
+    response = requests.get(url, headers=headers)
+    Json = response.json()
+    return jsonify(Json)
 
 ######################################
 ##     TEST O PRUEBA DE SERVICIO    ##
