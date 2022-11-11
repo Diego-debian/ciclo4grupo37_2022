@@ -165,10 +165,64 @@ def modificarPartido(id):
     return jsonify(Json)
 
 @app.route("/partidos/<string:id>", methods=['DELETE'])
-def eliminarMesa(id):
+def eliminarPartido(id):
     headers= {"Content-Type": "application/json; charset=utf-8"}
     url = dataConfig["url-backend-votes"]+'/partidos/'+id
     response = requests.get(url, headers=headers)
+    Json = response.json()
+    return jsonify(Json)
+
+######################################
+##      ENDPOINTS DE CANDIDATOS     ##
+######################################
+@app.route("/candidatos", methods=['GET'])
+def getCandidatos():
+    headers= {"Content-Type": "application/json; charset=utf-8"}
+    url = dataConfig["url-backend-votes"]+'/candidatos'
+    response = requests.get(url, headers=headers)
+    Json = response.json()
+    return jsonify(Json)
+
+@app.route("/candidatos", methods=["POST"])
+def crearCandidato():
+    data = request.get_json() #Para los datos que llegan en el body
+    headers= {"Content-Type": "application/json; charset=utf-8"}
+    url = dataConfig["url-backend-votes"]+'/candidatos'
+    response = requests.post(url, headers=headers, json=data)
+    Json = response.json()
+    return jsonify(Json)
+
+@app.route("/candidatos/<string:id>", methods=['GET'])
+def getCandidato(id):
+    headers= {"Content-Type": "application/json; charset=utf-8"}
+    url = dataConfig["url-backend-votes"]+'/candidatos/'+id
+    response = requests.get(url, headers=headers)
+    Json = response.json()
+    return jsonify(Json)
+
+@app.route("/candidatos/<string:id>", methods=["PUT"])
+def modificarCandidato(id):
+    data = request.get_json() #Para los datos que llegan en el body
+    headers= {"Content-Type": "application/json; charset=utf-8"}
+    url = dataConfig["url-backend-votes"]+'/candidatos/'+id
+    response = requests.put(url, headers=headers, json=data)
+    Json = response.json()
+    return jsonify(Json)
+
+@app.route("/candidatos/<string:id>", methods=['DELETE'])
+def eliminarCandidato(id):
+    headers= {"Content-Type": "application/json; charset=utf-8"}
+    url = dataConfig["url-backend-votes"]+'/candidatos/'+id
+    response = requests.get(url, headers=headers)
+    Json = response.json()
+    return jsonify(Json)
+
+@app.route("/candidatos/<string:id_candiato>/partido/<string:id_partido>", methods=["PUT"])
+def asignarPartidoCandidato(id_candidato, id_partido):
+    data = request.get_json() #Para los datos que llegan en el body
+    headers= {"Content-Type": "application/json; charset=utf-8"}
+    url = dataConfig["url-backend-votes"]+'/candidatos/'+id_candidato+'/partido/'+id_partido
+    response = requests.put(url, headers=headers, json=data)
     Json = response.json()
     return jsonify(Json)
 
