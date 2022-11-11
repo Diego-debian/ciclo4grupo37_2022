@@ -30,6 +30,12 @@ public class ControladorPermisosRoles {
         return miRepositorioPermisosRol.findAll();
     }
 
+    /**
+     * añadir un permiso a un rol
+     * @param id_rol
+     * @param id_permiso
+     * @return
+     */
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("rol/{id_rol}/permiso/{id_permiso}")
     public PermisosRol create(@PathVariable String id_rol,
