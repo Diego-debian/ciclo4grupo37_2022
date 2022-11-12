@@ -47,7 +47,7 @@ def limpiarURL(url):
     for laParte in partes:
         if re.search('\\d', laParte):
             url = url.replace(laParte, "?")
-        return url
+    return url
 
 def validarPermiso(endPoint, metodo, idRol):
     url=dataConfig["url-backend-security"]+"/permisos-roles/validar-permiso/rol/"+str(idRol)
@@ -69,6 +69,7 @@ def validarPermiso(endPoint, metodo, idRol):
 @app.before_request
 def before_request_callback():
     endPoint=limpiarURL(request.path)
+    print(endPoint)
     excludedRoutes=["/login"]
     if excludedRoutes.__contains__(request.path):
         print("ruta excluida ",request.path)
@@ -123,7 +124,7 @@ def modificarMesas(id):
 def eliminarMesa(id):
     headers= {"Content-Type": "application/json; charset=utf-8"}
     url = dataConfig["url-backend-votes"]+'/mesas/'+id
-    response = requests.get(url, headers=headers)
+    response = requests.delete(url, headers=headers)
     Json = response.json()
     return jsonify(Json)
 
@@ -168,7 +169,7 @@ def modificarPartido(id):
 def eliminarPartido(id):
     headers= {"Content-Type": "application/json; charset=utf-8"}
     url = dataConfig["url-backend-votes"]+'/partidos/'+id
-    response = requests.get(url, headers=headers)
+    response = requests.delete(url, headers=headers)
     Json = response.json()
     return jsonify(Json)
 
@@ -213,18 +214,23 @@ def modificarCandidato(id):
 def eliminarCandidato(id):
     headers= {"Content-Type": "application/json; charset=utf-8"}
     url = dataConfig["url-backend-votes"]+'/candidatos/'+id
-    response = requests.get(url, headers=headers)
+    response = requests.delete(url, headers=headers)
     Json = response.json()
     return jsonify(Json)
 
-@app.route("/candidatos/<string:id_candiato>/partido/<string:id_partido>", methods=["PUT"])
+@app.route("/candidatos/<string:id_candidato>/partido/<string:id_partido>", methods=["PUT"])
 def asignarPartidoCandidato(id_candidato, id_partido):
-    data = request.get_json() #Para los datos que llegan en el body
+    data = {
+        "candidato":{},
+        "partido":{}
+    }
     headers= {"Content-Type": "application/json; charset=utf-8"}
     url = dataConfig["url-backend-votes"]+'/candidatos/'+id_candidato+'/partido/'+id_partido
     response = requests.put(url, headers=headers, json=data)
     Json = response.json()
     return jsonify(Json)
+
+
 
 ######################################
 ##     TEST O PRUEBA DE SERVICIO    ##
